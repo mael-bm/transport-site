@@ -92,17 +92,25 @@ defmodule Transport.ImportDataTest do
     DB.Repo.aggregate(type, :count, :id)
   end
 
+  require Logger
+
   @tag :focus
   test "hello world des imports" do
+
+    Logger.warn "import:001"
     insert_national_dataset(datagouv_id = "dataset1_id")
+    Logger.warn "import:002"
 
     assert db_count(DB.Dataset) == 1
     assert db_count(DB.Resource) == 0
+    Logger.warn "import:003"
 
     with_mock HTTPoison, get: http_get_mock_200(datagouv_id), head: http_head_mock() do
       with_mock Datagouvfr.Client.CommunityResources, get: fn _ -> {:ok, []} end do
         with_mock HTTPStreamV2, fetch_status_and_hash: http_stream_mock() do
+          Logger.warn "import:004"
           logs = capture_log([level: :info], fn -> ImportData.import_all_datasets() end)
+          Logger.warn "import:005"
 
           assert_called_exactly(HTTPoison.get(:_, :_, :_), 1)
 
@@ -118,9 +126,12 @@ defmodule Transport.ImportDataTest do
         end
       end
     end
+    Logger.warn "import:006"
 
     assert db_count(DB.Dataset) == 1
     assert db_count(DB.Resource) == 1
+    Logger.warn "import:007"
+
   end
 
   test "import fails when datagouv responds a 404" do

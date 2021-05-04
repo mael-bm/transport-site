@@ -92,6 +92,7 @@ defmodule Transport.ImportDataTest do
     DB.Repo.aggregate(type, :count, :id)
   end
 
+  @tag :focus
   test "hello world des imports" do
     insert_national_dataset(datagouv_id = "dataset1_id")
 

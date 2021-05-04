@@ -12,6 +12,7 @@ defmodule TransportWeb.PageControllerTest do
     assert html =~ "disponible, valoriser et améliorer"
   end
 
+  @tag :focus
   test "GET / shows a contact button", %{conn: conn} do
     conn = conn |> get(page_path(conn, :index))
 

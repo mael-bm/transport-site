@@ -12,9 +12,13 @@ defmodule TransportWeb.PageControllerTest do
     assert html =~ "disponible, valoriser et améliorer"
   end
 
+  require Logger
+
   @tag :focus
   test "GET / shows a contact button", %{conn: conn} do
+    Logger.warn "contact:001"
     conn = conn |> get(page_path(conn, :index))
+    Logger.warn "contact:002"
 
     [_element] =
       conn
